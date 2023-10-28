@@ -14,7 +14,7 @@ const SalesProvider = ({ children }) => {
 
     //useState hookunu kullanarak herhangi bir çalışanın yaptığı günlük maksimum satışı,
 // HeatmapChartta legendin alabileceği maksiumum değerin, bu değere göre belirlenmesini istiyorum.bunun sebebi toplam ve ortalama satış değerlerinin heatmapin özelliklerini etkilemesini engellemek 
-    const [maxDailySale, setMaxDailySale] = useState(0);
+    const [maxDailySale, setMaxDailySale] = useState(Math.max(...salesData.map(item => item[2])));
 
 
     //useState kullanarak sonrasında her çalışanın toplam ve ortalama satış değerlerinin ekleyeceğim avgTotSales adınfa boş bir dizi oluşturuyorum.
@@ -24,7 +24,9 @@ const SalesProvider = ({ children }) => {
 
 
 // Burada her çalışanın her gün yaptığı toplam ve ortalama satışları hesaplayıp, bu bilgileri bir geçici bir diziye aktarıyorum, sonrasında bu diziyi useState hookunu kullanarak avgTotalSales verisine atıyorum.
-  const getSumAndAvg=()=>{
+  
+
+const getSumAndAvg=()=>{
     let temporaryArray = [];
 
     let sumOfSales = 0;
@@ -45,13 +47,13 @@ const SalesProvider = ({ children }) => {
   }
  
 
-  //Burada useEffect hookunu kulanarak, salesData verisine bağlı salesData değiştiği sürece
+  //Burada useEffect hookunu kulanarak, günlük maksimum değerin atanması ve toplam ve ortalama satışların hesaplanmasını ilk renderda hesaplanmasını sağlıyorum 
     useEffect(() => {
 
         setMaxDailySale(Math.max(...salesData.map(item => item[2])));
 
         getSumAndAvg();
-    }, [salesData])
+    }, [])
 
 
 
