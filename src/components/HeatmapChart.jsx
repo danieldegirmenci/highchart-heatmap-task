@@ -5,7 +5,7 @@ import HighchartsHeatmap from 'highcharts/modules/heatmap'
 
 //oluşturduğum contexti içe aktarıyorum
 import { useContext } from "react"
-import { SalesContext } from './context';
+import { SalesContext } from '../context/context';
 
 
 HighchartsHeatmap(Highcharts);

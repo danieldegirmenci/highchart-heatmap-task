@@ -1,8 +1,7 @@
-
 import React, { useEffect, useState } from "react"
 
 //Sonradan veriyi daha kolay değiştirilmesini veya ekleme çıkarma yapılmasını kolaylaştırması için satış verilerini ayrı bir dosyada oluşturdum.
-import salesData from './salesData.json'
+import salesData from '../salesData.json'
 
 //contexti oluşturuyorum
 const SalesContext = React.createContext();
