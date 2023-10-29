@@ -17,7 +17,7 @@ Proje için gerekli yazılımları ve araçları yükleyin:
 1. Projeyi klonlayın:
 
 ```bash
-git clone https://github.com/kullanici/proje-adı.git
+git clone https://github.com/danieldegirmenci/highchart-heatmap.git
 ```
 
 
