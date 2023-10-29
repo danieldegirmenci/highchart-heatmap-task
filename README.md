@@ -24,7 +24,7 @@ git clone https://github.com/danieldegirmenci/highchart-heatmap-task.git
 1. Proje klasörüne gidin:
 
 ```bash
-cd proje-adı
+cd heatmap
 ```
 
 
