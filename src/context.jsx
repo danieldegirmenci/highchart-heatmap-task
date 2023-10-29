@@ -1,23 +1,25 @@
 
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 
-//Sonradan datayı daha kolay değiştirmemi/değiştirilmesini sağlaması için satış verilerini ayrı bir dosyada oluşturdum.
+//Sonradan veriyi daha kolay değiştirilmesini veya ekleme çıkarma yapılmasını kolaylaştırması için satış verilerini ayrı bir dosyada oluşturdum.
 import salesData from './salesData.json'
 
 //contexti oluşturuyorum
 const SalesContext = React.createContext();
 
 
+
+
 const SalesProvider = ({ children }) => {
 
-    //useState kullanarak sonrasında her çalışanın toplam ve ortalama satış değerlerinin ekleyeceğim avgTotSales adınfa boş bir dizi oluşturuyorum.
+    //useState kullanarak sonrasında her çalışanın toplam ve ortalama satış değerlerinin ekleyeceğim avgTotSales adında boş bir dizi oluşturuyorum.
     // Sonrasında avgTotalSales dizisini heatmapte ayrı bir serinin datası olarak HeatmapChart componentindeki highchart ayarlarına ekleyeceğim.
     const [avgTotSales, setAvgTotSales] = useState([]);
 
 
 
 
-  //Burada useEffect hookunu kulanarak, toplam ve ortalama satışların hesaplanmasını ve ilk renderda hesaplanmasını sağlıyorum 
+  //Burada useEffect hookunu kulanarak, toplam ve ortalama satış sayılarının ilk renderda hesaplanmasını sağlıyorum 
     useEffect(() => {
         // Burada her çalışanın her gün yaptığı toplam ve ortalama satışları hesaplayıp, bu bilgileri bir geçici bir diziye aktarıyorum, sonrasında bu diziyi useState hookunu kullanarak avgTotalSales verisine atıyorum.iyi bir algoritma olduğunu düşünmüyorum daha iyi yazılabilirdi
   
@@ -57,9 +59,6 @@ const SalesProvider = ({ children }) => {
 }
 
 
-//Contextteki verilere kolay erişilebilmesi için global context fonksiyonu yazıyorum ve dışa aktarıyorum
-export const useGlobalContext = () => {
-    return useContext(SalesContext)
-}
 
+//Contexti ve providerı dışa aktarıyorum sonrasında veri çekmem için, zaman zaman unutup kendime saçma bir süre kaybettirebildiğim için not almak istedim
 export { SalesContext, SalesProvider }
