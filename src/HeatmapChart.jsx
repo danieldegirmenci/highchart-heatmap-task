@@ -12,7 +12,7 @@ HighchartsHeatmap(Highcharts);
 const HeatmapChart = () => {
 
     // contextten highchart ayarlarında ihtiyacım olacak hesaplamaları ve verileri çekiyorum.
-    const {maxDailySale,salesData,avgTotSales} = useGlobalContext();
+    const {salesData,avgTotSales} = useGlobalContext();
     
     
     //burada günlük, toplam veya ortalama satış verilere göre tooltipi özelleştiriyorum.
@@ -50,17 +50,28 @@ const HeatmapChart = () => {
     //Çalışanların o hafta yaptıkları satışın toplamını ve ortalamasını ayrı bir dizi şeklinde heatmape almayı düşündüm, sonrasında çok daha optimize ve işimi kolaylaştıracak bir yol bulabilirim.
     const series2 = {
         name: 'Total and average sales',
+        type:'heatmap',
         borderWidth: 1,
         data: avgTotSales,
+        color:'white',
+        
         dataLabels: {
             enabled: true,
             color: '#000000',
             
+            
          },
 
-        colorAxis: null,
+        
+        colorAxis: {},
+        showInLegend: false,
+        
+       
+
         marker: {
-            enabled: false,
+            
+            lineWidth: 3,
+            lineColor: Highcharts.getOptions().colors[7],
         },
         
     };
@@ -90,7 +101,7 @@ const HeatmapChart = () => {
             categories: ['Alexander', 'Marie', 'Maximillian', 'Sophia', 'Lukas', 'Maria', 'Leon', 'Anna', 'Tim', 'Laura']
         },
         yAxis: [{
-            //Total ve averag'ı ayrı bir dizi olarak eklemeye çalıştım fakat istediğim şeyi tam olarak yapamadım, bütün kodun yapısını değiştirmem gerekti çalıştıramayınca bu çözümden devam ettim
+            //Total ve average'ı ayrı bir dizi olarak eklemeye çalıştım fakat istediğim şeyi tam olarak yapamadım, bütün kodun yapısını değiştirmem gerekti çalıştıramayınca bu çözümden devam ettim
             categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Total', 'Average'],
             title: null,
             reversed: true,
@@ -101,9 +112,9 @@ const HeatmapChart = () => {
 
         colorAxis: {
             min: 0,
-            max: maxDailySale,
             minColor: '#FFFFFF',
-            maxColor: Highcharts.getOptions().colors[7]
+            maxColor: Highcharts.getOptions().colors[7],
+            
         },
         legend: {
             align: 'right',
@@ -113,9 +124,9 @@ const HeatmapChart = () => {
             symbolHeight: 300,
             
             
+            
         },
 
-//tooltipin series2de çok yavaş çalıştığının farkındayım, algortimadan mı kaynaklı ikinci serinin heatmap özelliklerinin manipüle edilmiş olmasından mı araştırıyorum fakat henüz çözemedim
         tooltip: {
             formatter: customTooltipFormatter
         },
@@ -130,7 +141,7 @@ const HeatmapChart = () => {
         responsive: {
             rules: [{
                 condition: {
-                    maxWidth: 1000
+                    maxWidth: 900
                 },
                 chartOptions: {
                     chart: {
@@ -139,7 +150,7 @@ const HeatmapChart = () => {
                     },
                     yAxis:{
                         labels:{
-                           //ekran 1000pxden küçükken günlerin,toplam ve average isimlerinin sadece ilk harfinin görünmesini sağlamak istedim
+                           //ekran 1000pxden küçükken günlerin,toplam ve average isimlerinin sadece ilk harfinin görünmesini sağlıyorum
                             formatter: function () {
                                 
                                 return this.value.substring(0, 1);
@@ -157,8 +168,9 @@ const HeatmapChart = () => {
 
     return (
         <div>
-            {/* sayfa ilk açıldığında avgTotSales verisini beklerken UIda hata oluşuyor bunu engellemek için avgTotSales verisi oluşturulduğunda tabloyu yüklemesi iççin conditional rendering yaptım*/}
-            {avgTotSales[1] && <HighchartsReact highcharts={Highcharts} options={options} />}
+            {/* sayfa ilk açıldığında avgTotSales verisini beklerken UIda hata oluşuyor, bunu engellemek için avgTotSales verisi oluşturulduğunda tablonun yüklemesi için conditional rendering yaptım*/}
+            {avgTotSales[1] &&
+             <HighchartsReact highcharts={Highcharts} options={options} />}
         </div>
        
     

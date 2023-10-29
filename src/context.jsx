@@ -10,49 +10,35 @@ const SalesContext = React.createContext();
 
 const SalesProvider = ({ children }) => {
 
-
-
-    //useState hookunu kullanarak herhangi bir çalışanın yaptığı günlük maksimum satışı,
-// HeatmapChartta legendin alabileceği maksiumum değerin, bu değere göre belirlenmesini istiyorum.bunun sebebi toplam ve ortalama satış değerlerinin heatmapin özelliklerini etkilemesini engellemek 
-    const [maxDailySale, setMaxDailySale] = useState(Math.max(...salesData.map(item => item[2])));
-
-
     //useState kullanarak sonrasında her çalışanın toplam ve ortalama satış değerlerinin ekleyeceğim avgTotSales adınfa boş bir dizi oluşturuyorum.
     // Sonrasında avgTotalSales dizisini heatmapte ayrı bir serinin datası olarak HeatmapChart componentindeki highchart ayarlarına ekleyeceğim.
     const [avgTotSales, setAvgTotSales] = useState([]);
 
 
 
-// Burada her çalışanın her gün yaptığı toplam ve ortalama satışları hesaplayıp, bu bilgileri bir geçici bir diziye aktarıyorum, sonrasında bu diziyi useState hookunu kullanarak avgTotalSales verisine atıyorum.
-  
 
-const getSumAndAvg=()=>{
-    let temporaryArray = [];
-
-    let sumOfSales = 0;
-    for (let dailyData of salesData) {
-
-        const employeeId = dailyData[0];
-        const column_data = dailyData[1];
-        const sales = dailyData[2];
-
-        sumOfSales += sales;
-        if (column_data === 4) {
-            temporaryArray.push([employeeId, column_data + 1, sumOfSales], [employeeId, column_data + 2, sumOfSales / 5]);
-            sumOfSales = 0;
-        }
-
-    }
-    setAvgTotSales(temporaryArray)
-  }
- 
-
-  //Burada useEffect hookunu kulanarak, günlük maksimum değerin atanması ve toplam ve ortalama satışların hesaplanmasını ilk renderda hesaplanmasını sağlıyorum 
+  //Burada useEffect hookunu kulanarak, toplam ve ortalama satışların hesaplanmasını ve ilk renderda hesaplanmasını sağlıyorum 
     useEffect(() => {
+        // Burada her çalışanın her gün yaptığı toplam ve ortalama satışları hesaplayıp, bu bilgileri bir geçici bir diziye aktarıyorum, sonrasında bu diziyi useState hookunu kullanarak avgTotalSales verisine atıyorum.iyi bir algoritma olduğunu düşünmüyorum daha iyi yazılabilirdi
+  
+        let temporaryArray = [];
 
-        setMaxDailySale(Math.max(...salesData.map(item => item[2])));
+        let sumOfSales = 0;
+        for (let dailyData of salesData) {
+    
+            const row_data = dailyData[0];
+            const column_data = dailyData[1];
+            const sales = dailyData[2];
+    
+            sumOfSales += sales;
+            if (column_data === 4) {
+                temporaryArray.push([row_data, column_data + 1, sumOfSales], [row_data, column_data + 2, sumOfSales / 5]);
+                sumOfSales = 0;
+            }
+    
+        }
+        setAvgTotSales(temporaryArray)
 
-        getSumAndAvg();
     }, [])
 
 
@@ -63,7 +49,7 @@ const getSumAndAvg=()=>{
 
     return (
        
-        <SalesContext.Provider value={{ salesData, avgTotSales, maxDailySale }}>
+        <SalesContext.Provider value={{ salesData, avgTotSales }}>
             {children}
         </SalesContext.Provider>
     )
@@ -71,7 +57,7 @@ const getSumAndAvg=()=>{
 }
 
 
-//Contextteki değerlere kolay erişilebilmesi için global context fonksiyonu yazıyorum ve dışa aktarıyorum
+//Contextteki verilere kolay erişilebilmesi için global context fonksiyonu yazıyorum ve dışa aktarıyorum
 export const useGlobalContext = () => {
     return useContext(SalesContext)
 }
